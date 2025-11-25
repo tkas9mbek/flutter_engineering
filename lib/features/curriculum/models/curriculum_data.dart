@@ -1,25 +1,26 @@
 import 'package:flutter_engineering/core/theme/app_colors.dart';
-import 'package:flutter_engineering/features/curriculum/models/day_info.dart';
+import 'package:flutter_engineering/features/curriculum/models/study_day_info.dart';
 
 /// Complete curriculum data for all 8 weeks
 class CurriculumData {
-  static List<DayInfo> getAllDays() {
+  static List<StudyDayInfo> getAllDays() {
     return [
       // Phase 1: Week 1
-      DayInfo(
+      const StudyDayInfo(
         phase: 1,
         week: 1,
         day: 1,
         title: 'The Trinity (Widget, Element, RenderObject)',
         concept: 'Widgets are configuration. Elements are lifecycle. RenderObjects are paint/layout.',
         tasks: [
-          'Read framework.dart. Draw the three trees for a simple Container(child: Text(\'Hi\')).',
+          'Read framework.dart. Draw the three trees for a simple Container(child: Text("Hi")).',
           'Call debugDumpApp() inside a button press and analyze the console output to identify the Element tree structure.',
           'Create a widget that prints to the console inside initState (Element mounting) vs build (Widget configuration) to verify when they run.',
         ],
         phaseColor: AppColors.phase1Color,
+        studyRoute: 'trinity-studies',
       ),
-      DayInfo(
+      const StudyDayInfo(
         phase: 1,
         week: 1,
         day: 2,
@@ -31,8 +32,9 @@ class CurriculumData {
           'Fix a "RenderFlex overflowed" error by calculating the pixel math manually on paper first, then applying it.',
         ],
         phaseColor: AppColors.phase1Color,
+        studyRoute: 'constraints-studies',
       ),
-      DayInfo(
+      const StudyDayInfo(
         phase: 1,
         week: 1,
         day: 3,
@@ -44,9 +46,10 @@ class CurriculumData {
           'Override debugFillProperties in a custom widget to expose internal variable states to the DevTools "Widget Details" tree.',
         ],
         phaseColor: AppColors.phase1Color,
+        studyRoute: 'frame-pipeline-studies',
       ),
       // Phase 1: Week 2
-      DayInfo(
+      const StudyDayInfo(
         phase: 1,
         week: 2,
         day: 1,
@@ -54,12 +57,13 @@ class CurriculumData {
         concept: 'Drawing raw pixels without standard widgets.',
         tasks: [
           'Use CustomPaint to draw a complex shape. Implement hit-testing manually (no GestureDetector).',
-          'Implement shouldRepaint correctly: return false if properties haven\'t changed and verify paint isn\'t called.',
+          'Implement shouldRepaint correctly: return false if properties haven"t changed and verify paint isn"t called.',
           'Use PathMetric to animate a line drawing itself (tracing a path) over time.',
         ],
         phaseColor: AppColors.phase1Color,
+        studyRoute: 'custom-paint-studies',
       ),
-      DayInfo(
+      const StudyDayInfo(
         phase: 1,
         week: 2,
         day: 2,
@@ -71,8 +75,9 @@ class CurriculumData {
           'Implement computeMinIntrinsicWidth and computeMaxIntrinsicWidth for your custom RenderObject.',
         ],
         phaseColor: AppColors.phase1Color,
+        studyRoute: 'render-objects-studies',
       ),
-      DayInfo(
+      const StudyDayInfo(
         phase: 1,
         week: 2,
         day: 3,
@@ -84,14 +89,15 @@ class CurriculumData {
           'Compare CPU usage (Profile mode) of a complex animation with and without a RepaintBoundary.',
         ],
         phaseColor: AppColors.phase1Color,
+        studyRoute: 'boundaries-studies',
       ),
       // Phase 2: Week 3
-      DayInfo(
+      const StudyDayInfo(
         phase: 2,
         week: 3,
         day: 1,
         title: 'The Event Loop',
-        concept: 'Microtasks vs. Event Queue. Why await doesn\'t create threads.',
+        concept: 'Microtasks vs. Event Queue. Why await doesn"t create threads.',
         tasks: [
           'Write a script mixing Future.delayed, Future.microtask, and sync code. Predict the print order exactly.',
           'Write a while(true) loop inside a button callback and try to tap another button. Observe how the UI freezes completely (starving the event loop).',
@@ -99,7 +105,7 @@ class CurriculumData {
         ],
         phaseColor: AppColors.phase2Color,
       ),
-      DayInfo(
+      const StudyDayInfo(
         phase: 2,
         week: 3,
         day: 2,
@@ -112,21 +118,21 @@ class CurriculumData {
         ],
         phaseColor: AppColors.phase2Color,
       ),
-      DayInfo(
+      const StudyDayInfo(
         phase: 2,
         week: 3,
         day: 3,
         title: 'Context & Lifecycle',
         concept: 'BuildContext is just the Element. Why async gaps are dangerous.',
         tasks: [
-          'Force a "Looking up a deactivated widget\'s ancestor" error by delaying a navigation pop and inspecting context.',
+          'Force a "Looking up a deactivated widget"s ancestor" error by delaying a navigation pop and inspecting context.',
           'Fix the error using if (!context.mounted) return;.',
           'Use Element.visitChildren (accessed via context) to manually walk the widget tree and find a specific child type.',
         ],
         phaseColor: AppColors.phase2Color,
       ),
       // Phase 2: Week 4
-      DayInfo(
+      const StudyDayInfo(
         phase: 2,
         week: 4,
         day: 1,
@@ -139,7 +145,7 @@ class CurriculumData {
         ],
         phaseColor: AppColors.phase2Color,
       ),
-      DayInfo(
+      const StudyDayInfo(
         phase: 2,
         week: 4,
         day: 2,
@@ -152,7 +158,7 @@ class CurriculumData {
         ],
         phaseColor: AppColors.phase2Color,
       ),
-      DayInfo(
+      const StudyDayInfo(
         phase: 2,
         week: 4,
         day: 3,
@@ -168,11 +174,11 @@ class CurriculumData {
     ];
   }
 
-  static List<DayInfo> getDaysByPhase(int phase) {
+  static List<StudyDayInfo> getDaysByPhase(int phase) {
     return getAllDays().where((day) => day.phase == phase).toList();
   }
 
-  static List<DayInfo> getDaysByWeek(int phase, int week) {
+  static List<StudyDayInfo> getDaysByWeek(int phase, int week) {
     return getAllDays()
         .where((day) => day.phase == phase && day.week == week)
         .toList();

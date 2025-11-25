@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_engineering/core/theme/theme_provider.dart';
 import 'package:flutter_engineering/features/curriculum/models/curriculum_data.dart';
-import 'package:flutter_engineering/features/curriculum/models/day_info.dart';
+import 'package:flutter_engineering/features/curriculum/models/study_day_info.dart';
+import 'package:flutter_engineering/features/study_day/widgets/study_day_action_area.dart';
+import 'package:flutter_engineering/features/study_day/widgets/study_day_concept_section.dart';
+import 'package:flutter_engineering/features/study_day/widgets/study_day_header.dart';
+import 'package:flutter_engineering/features/study_day/widgets/study_day_tasks_list.dart';
 
+/// Screen displaying details and tasks for a specific study day
 class StudyDayScreen extends StatelessWidget {
   final int phase;
   final int week;
   final int day;
-  final DayInfo? dayInfo;
+  final StudyDayInfo? dayInfo;
 
   const StudyDayScreen({
     required this.phase,
@@ -17,22 +22,16 @@ class StudyDayScreen extends StatelessWidget {
     super.key,
   });
 
-  DayInfo _getDayInfo() {
-    if (dayInfo != null) return dayInfo!;
+  StudyDayInfo _getDayInfo() {
+    if (dayInfo != null) {
+      return dayInfo!;
+    }
 
     // Fallback: find day info from curriculum data
     final allDays = CurriculumData.getAllDays();
+
     return allDays.firstWhere(
       (d) => d.phase == phase && d.week == week && d.day == day,
-      orElse: () => DayInfo(
-        phase: phase,
-        week: week,
-        day: day,
-        title: 'Unknown Day',
-        concept: 'Day not found',
-        tasks: [],
-        phaseColor: Colors.grey,
-      ),
     );
   }
 
@@ -58,19 +57,11 @@ class StudyDayScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Phase indicator
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: info.phaseColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: info.phaseColor),
-              ),
-              child: Text(
-                'Phase $phase • Week $week • Day $day',
-                style: textStyles.mediumBody12.copyWith(
-                  color: info.phaseColor,
-                ),
-              ),
+            StudyDayHeader(
+              phase: info.phase,
+              week: info.week,
+              day: info.day,
+              phaseColor: info.phaseColor,
             ),
             const SizedBox(height: 16),
 
@@ -84,125 +75,20 @@ class StudyDayScreen extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Concept section
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: theme.border),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Concept',
-                    style: textStyles.boldBody16.copyWith(
-                      color: theme.primary,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    info.concept,
-                    style: textStyles.regularBody16.copyWith(
-                      color: theme.textPrimary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            StudyDayConceptSection(concept: info.concept),
             const SizedBox(height: 24),
 
             // Tasks section
-            Text(
-              'Tasks',
-              style: textStyles.boldTitle20.copyWith(
-                color: theme.textPrimary,
-              ),
+            StudyDayTasksList(
+              tasks: info.tasks,
+              phaseColor: info.phaseColor,
             ),
-            const SizedBox(height: 12),
-
-            ...info.tasks.asMap().entries.map((entry) {
-              final index = entry.key;
-              final task = entry.value;
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: theme.surface,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: theme.border),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 28,
-                        height: 28,
-                        decoration: BoxDecoration(
-                          color: info.phaseColor.withOpacity(0.1),
-                          shape: BoxShape.circle,
-                          border: Border.all(color: info.phaseColor),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '${index + 1}',
-                            style: textStyles.boldBody14.copyWith(
-                              color: info.phaseColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          task,
-                          style: textStyles.regularBody14.copyWith(
-                            color: theme.textPrimary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
-
             const SizedBox(height: 32),
 
-            // Study area placeholder
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: theme.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: theme.border, width: 2),
-              ),
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.edit_note,
-                    size: 48,
-                    color: theme.textSecondary,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Your Study Area',
-                    style: textStyles.boldTitle18.copyWith(
-                      color: theme.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Fill this space with your learning progress,\ncode experiments, and notes.',
-                    style: textStyles.regularBody14.copyWith(
-                      color: theme.textSecondary,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+            // Study area / action button
+            StudyDayActionArea(
+              studyRoute: info.studyRoute,
+              phaseColor: info.phaseColor,
             ),
           ],
         ),

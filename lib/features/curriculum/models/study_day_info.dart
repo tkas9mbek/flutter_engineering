@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Information about a specific study day
-class DayInfo {
+class StudyDayInfo {
   final int phase;
   final int week;
   final int day;
@@ -9,8 +9,9 @@ class DayInfo {
   final String concept;
   final List<String> tasks;
   final Color phaseColor;
+  final String? studyRoute;
 
-  const DayInfo({
+  const StudyDayInfo({
     required this.phase,
     required this.week,
     required this.day,
@@ -18,6 +19,7 @@ class DayInfo {
     required this.concept,
     required this.tasks,
     required this.phaseColor,
+    this.studyRoute,
   });
 
   String get fullTitle => 'Phase $phase, Week $week, Day $day: $title';

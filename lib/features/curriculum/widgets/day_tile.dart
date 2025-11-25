@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_engineering/core/theme/theme_provider.dart';
-import 'package:flutter_engineering/features/curriculum/models/day_info.dart';
+import 'package:flutter_engineering/features/curriculum/models/study_day_info.dart';
 import 'package:go_router/go_router.dart';
 
 class DayTile extends StatelessWidget {
-  final DayInfo dayInfo;
+  final StudyDayInfo dayInfo;
 
   const DayTile({
     required this.dayInfo,
@@ -21,8 +21,13 @@ class DayTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
         onTap: () {
-          context.go(
-            '/day/${dayInfo.phase}/${dayInfo.week}/${dayInfo.day}',
+          context.pushNamed(
+            'study-day',
+            pathParameters: {
+              'phase': '${dayInfo.phase}',
+              'week': '${dayInfo.week}',
+              'day': '${dayInfo.day}',
+            },
             extra: dayInfo,
           );
         },
